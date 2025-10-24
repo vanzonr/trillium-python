@@ -1,0 +1,11 @@
+HIGHLIGHT=pygments
+ASPECTRATIO=169
+FONTFAMILY=DejaVuSans
+FONTSIZE=11pt
+THEME=Boadilla
+INNERTHEME=rounded
+FONTTHEME=structurebold
+COLORTHEME=crane
+THEMETEX=style.tex
+LOGO=images/MyLoGo.png
+LOGOHEIGHT=0.13

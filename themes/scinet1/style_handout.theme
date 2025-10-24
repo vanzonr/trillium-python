@@ -1,0 +1,6 @@
+source style.theme
+HIGHLIGHT=kate
+HANDOUT=true
+THEMETEX=style_handout.tex
+
+
