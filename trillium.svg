@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:export>
+      <bx:file format="png" path="trilnodes.png"/>
+    </bx:export>
+  </defs>
+  <rect x="18.465" y="21.02" width="63.976" height="62.992" style="stroke: rgb(0, 0, 0); fill: rgb(102, 102, 102);"/>
+  <rect x="98.849" y="21.02" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(102, 102, 102);"/>
+  <rect x="193.013" y="21.02" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(102, 102, 102);"/>
+  <rect x="287.177" y="21.02" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(85, 85, 85);"/>
+  <rect x="381.342" y="21.02" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(68, 68, 68);"/>
+  <rect x="18.465" y="265.728" width="65.83" height="45.116" style="stroke: rgb(0, 0, 0); fill: rgb(103, 137, 80);"/>
+  <rect x="98.405" y="265.728" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(103, 137, 80);"/>
+  <rect x="193.013" y="265.728" width="77.756" height="39.554" style="stroke: rgb(0, 0, 0); fill: rgb(73, 82, 129);"/>
+  <rect x="287.177" y="265.728" width="77.756" height="211.614" style="stroke: rgb(0, 0, 0); fill: rgb(73, 82, 129);"/>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19px; white-space: pre;" x="26.575" y="56.103" transform="matrix(1, 0, 0, 1, 0, -6)">CPU<tspan x="26.575000762939453" dy="1em">​</tspan>Login</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19px; white-space: pre;" x="24.991" y="284.941">GPU <tspan x="24.990999221801758" dy="1em">​</tspan>Login</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 19px; white-space: pre;" x="209.695" y="291.137">OOD</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 17px; white-space: pre;" transform="matrix(1, 0, 0, 1, 77.579201, 60.284477)"><tspan x="26.575" y="56.103">CPU</tspan><tspan x="26.575000762939453" dy="1em">​</tspan><tspan>Compute<tspan x="26.575000762939453" dy="1em">​</tspan>Nodes</tspan></text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 17px; white-space: pre;" transform="matrix(1, 0, 0, 1, 76.262955, 305.485992)"><tspan x="26.575" y="56.103">GPU</tspan><tspan x="26.575000762939453" dy="1em">​</tspan><tspan>Compute<tspan x="26.575000762939453" dy="1em">​</tspan>Nodes</tspan></text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 17px; white-space: pre;" transform="matrix(1, 0, 0, 1, 264.762177, 303.686707)"><tspan x="26.575" y="56.103">CPU</tspan><tspan x="26.575000762939453" dy="1em">​</tspan><tspan>Compute<tspan x="26.575000762939453" dy="1em">​</tspan>Cores</tspan></text>
+  <rect x="107.997" y="48.323" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="116.052" y="203.452">. . .</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="210.832" y="203.615">. . .</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="304.832" y="203.615">. . .</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="400.832" y="203.615">. . .</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="115.887" y="442.886">. . .</text>
+  <text style="fill: rgb(255, 255, 255); font-family: Arial, sans-serif; font-size: 28px; white-space: pre;" x="304.047" y="443.361">. . .</text>
+  <rect x="202.469" y="47.923" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <rect x="298.469" y="47.923" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <rect x="393.469" y="47.923" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <rect x="108.885" y="291.486" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+  <rect x="296.58" y="291.232" width="56.86" height="8.035" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+</svg>
