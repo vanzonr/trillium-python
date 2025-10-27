@@ -376,43 +376,390 @@ Need to brush up on the Linux command line? SHARCNET has a self-guided course fo
   * Writable home directory
 ]]
 
+# Hands-on 2
+
+## Hands-on 2 (5 minutes)
+
+* From a CPU login node, copy the python code in /home/rzon/fashion.py to your own directoyr.
+
+* Try to run it with `python fashion.py`; it should fail.
+
+* Try `pip install torch`. What does it do? Does it work after that?
+
+Why not?
+
 # Software packages
 
 ## It's a shared system
 
+It is impossible to simultaneously install every user's required software and software version.  
+
+. . .
+
+### Almost all installed software is made available using modules
+. . .
+  * These set environment variables (`PATH`, etc.)
+     . . .
+  * Allows multiple, conflicting versions of a given package to be available.
+    . . .
+  * ****`module overview [MODULE]`**** shows the available software.
+. . .
+
+### Python wheels
+
+  * The module system does not work well for Python packages.
+    . . .
+  * One might try to just install these using `pip`, but you would get generic, non-optimized versions.
+    . . .
+  * To support optimized version of python packages, without requiring users to compile these themselves, we have a ****wheelhouse**** of packages that you can install into ****virtual environments****.
+    . . .
+  * ****`avail_wheels [PACKAGE]`**** shows the available python packages.
+
+## Virtual environments
+
+If you "pip installed"-ed `torch` in Hands-on 2, it did something:
+. . .
+  * A little utility called `mii` would have found a number of versions of `pip`.\vspace{-2mm}
+    . . .
+  * If you selected one, pip would install it for that version.was tied to a specific python module.\vspace{-2mm}
+    . . .
+  * Pip installed the package in `$HOME/.local/lib/pythonVERSION/site-packages`.
+
+But since we did not load that python module, so `python fashion.py` failed.
+
+### Bad solution: only load a module
+
+If you do `module load python/VERSION`, it would work now.
+
+But what if you yourself need to use different sets of packages?
+
+### Good solution: Use a virtual environment
+\vspace{-2mm}
+```bash
+$ module load python/3.13
+$ virtualenv --no-download ~/.virtualenvs/myenv
+$ source $HOME/.virtualenvs/myenv/bin/activate
+(myenv) $ pip install --no-index torch
+```
+
+# Hands-on 3
+
+## Hands-on 3 (10 minutes)
+
+ * Create the virtual environment. You will also need the package `torchvision`, so:
+```bash
+    $ module load python/3.13
+    $ virtualenv --no-download ~/.virtualenvs/myenv
+    $ source $HOME/.virtualenvs/myenv/bin/activate
+    (myenv) $ pip install --no-index torch torchvision
+```
+
+  * By the way, the options `--no-downloads` and `--noindex` cause this procedure to only use optimized packages from the wheelhouse.*
+
+  * What pip installed in the default directory, would override the ones in the virtual environment, so remove that:
+```bash
+    $ rm -rf $HOME/.local/lib/python*/site-packages
+```
+ * Make sure `python fashion.py` now starts properly.
+   . . .
+ * And see what fails next.\pause
+   (really? sorry yeah, really.)
+
+## To the compute nodes!
+
+```bash
+(myenv) $ python fashion.py
+CPU time limit exceeded
+```
+
+ * We ran this on a CPU login node, a **shared resource**.
+
+ * For fairness, each user can only run a limit amount of time.
+   . . .
+ * For longer runs, you need to submit a job to run on the compute nodes.
+   . . .
+   
+****Caveat (again)! This task here is not really heavy enough to warrent using a full 192-core Trillium node!****
+
+## Peculiarities of Trillium compute nodes 
+
+[[
+
+.
+
+ 1. You always get a multiple of 192-core nodes
+    (or a multiple of GPUs)
+    . . .
+ 2. They run batch jobs through a scheduler
+    . . .
+ 3. They run detached from a terminal
+    . . .
+ 4. Cannot write to $HOME
+    . . .
+ 5. No internet access
+    . . .
+  
+|||
+
+So:
+
+ 1. Bundle up short and small jobs (beyond today's workshop).    
+    .
+    .
+    . . .
+ 2. Write a job script to be submitted to the scheduler.
+    .
+    . . .
+ 3. Fine, but we can get emails when the job starts and ends.
+    .
+    . . .
+ 4. Copy everything for a job to $SCRATCH
+    . . .
+ 5. Write a separate python script to download the data (or run once from the login node).  
 
 
-# On Demand
+]]
 
-## Not everything needs 192 cores
 
-But what if you have that one postprocessing step that you need less than 192 cores for?  What if you need to do some visualization?
+# Hands-on 4
+
+## Hands-on 4 (20 min)
+
+  * Setup a directory in scratch:\vspace{-1mm}
+
+```bash
+    (myenv) $ mkdir $SCRATCH/myrun
+    (myenv) $ cp fashion.py $SCRATCH/myrun
+    (myenv) $ cd $SCRATCH/myrun
+```
+. . .
+\vspace{-3mm}
+
+  * Download the data from the login node:\vspace{-1mm}
+
+```bash
+    (myenv) $ python
+    >>> from torchvision import datasets
+    >>> training_data = datasets.FashionMNIST(root="data",download=True)
+    >>> exit()
+```
+
+. . .
+\vspace{-2mm}
+[[
+
+  * Create a jobscript and submit it:
+
+```bash
+    (myenv) sbatch -pdebug jobscript
+```
+
+||
+
+\vspace{-3mm}
+```bash
+#!/bin/bash
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=192
+#SBATCH --time=0:16:00
+#SBATCH --mail-type=ALL
+#SBATCH --mail-user=rzon@...
+#SBATCH --output=jobscript_%j.out
+module load python/3.13
+source $HOME/.virtualenvs/myenv/bin/activate
+export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
+python -u fashion.py 
+```
+]]
+
+## GPUs, you ask?
+
+Yes, of course, AI workload such as this should run on GPUs.
+. . .
+Luckily, pytorch code can run on either a CPU or GPU dynamically.
+. . .
+We just have to:
+. . .
+[[
+
+  * log into the gpu login node
+
+```bash
+    (myenv) $ ssh trig-login01 
+    $ module load python/3.13
+    $ source $HOME/.virtualenvs/myenv/bin/activate
+    (myenv) $ cd $SCRATCH/myrun
+```
+
+. . .
+
+  * and adapt the jobscript to ask for a GPU
+
+```bash
+    $ cp jobscript jobscriptgpu
+    $ nano jobscriptgpu
+```
+
+||
+
+. . .
+
+.
+.
+.
+.
+.
+.
+.
+```bash
+#SBATCH --gpus-per-node=1
+#SBATCH --cpus-per-node=24
+```
+
+]]
+
+. . .
+
+*Note that in jobscript, and when we ssh into another login node, the virtual environment is no longer active and modules are not loaded; you must reload and reactivate.*
+
+# Hands-on 5
+
+## Hands-on 5 (5 min)
+
+Let's run it on the GPU subcluster of Trillium!
+
+
+# Okay, but what about interactive notebooks?
+
+
+# SciNet's Open OnDemand
+
+## Not everything needs 192 cores, or a GPU
+
+Wwhat if you have that one postprocessing step that you need less than 192 cores for?
+.
+What if you need to do some visualization?
+.
+. . .
 For interactive work of that and other kinds in python, JupyterLab is typically used.
+. . .
+SciNet installed the OnDemand to provide Jupter Lab and other features in the browser.
 
-We installed the OnDemand to provide this JL and other features in the browser.
+## Logging into the Open OnDemand portal
 
-## What is OnDemand?
+[[
 
-Let's jump in (hands on)
+To access the Open OnDemand portal, open a web browser and navigate to the following page: ****<https://ondemand.scinet.utoronto.ca>****
+. . .
+You will be prompted to enter your Alliance username and password, followed by a second factor authentication via Duo or Yubikey.
+. . .
+Once you have logged in, you will be taken to the Open OnDemand dashboard.
+. . .
+From here you can access the various tools and applications available on the platform.
 
-In your browser, log into https://ondemand.scinet.utoronto.ca
+||
 
-Use your CCDB account
-Use your CCDB password
-Use your MFA
+![](ood-dashboard.png)
 
-You'll see the ondemand interface.
+]]
 
-OnDemand is this web interface. It was developed at OSC, and is getting widely adopted for many supercomputing systems. In Canada, Trillium, Nibi, and Vulcan, as well as on Grex 
+## File management
 
-# More
+The Open OnDemand platform provides a file browser.
 
-## Introduction to JupyterLab
+Click on the **Files** tab and select which directory you want to manage from the drop-down (`HOME`, `SCRATCH` or `PROJECT`).
+. . .
+You can:
 
-## Best practices
+* Navigate through your directories
+* Upload/download files
+* Create new files/directories
+* Delete files/directories
+* Edit existing files
+. . .
+*Note: there is a Globus button in the file browser at the top right as well, which will take you to the Globus web interface.*
 
-## Notebooks (Python, R, Julia)
+## Interactive applications
 
-## Virtual Desktop, VS Code, OpenRefine, LibreQDA
+Perhaps the most convenient part of Open OnDemand are its interactive applications that can be run directly from your web browser. To access the applications, navigate to the ***Interactive Apps*** tab and select the application you want to run from the drop-down.
+. . .
+This will then bring you to the job submission page where you can choose job parameters such as:
+. . .
+* Length of job in hours
+* Number of cores (there are no GPUs atm)
+* Amount of memory to allocate (GB)
+* Notify me by email when the job starts
+. . .
+When you have chosen your job parameters click on the ***Launch*** button to submit your job to the queue.
+. . .
+You will be taken to the ***My Interactive Sessions*** page where you can see the status of your job, i.e. queued, running or completed.
+. . .
+Once the job has been assigned a node and is running, you can click on the ***Connect to *** button to launch the application.
+. . .
+The application will open in a new tab in your browser.
 
-## Resource Monitoring
+## Available applications in OnDemand
+
+  * Trillium Desktop - a graphics desktop in your browser
+    . . .
+  * RStudio - an environment to run R
+    . . .
+  * VS Code - a code editor
+    . . .
+  * Paraview - a parallel visualization rpogram
+    . . .
+  * ARM Forge - to use the parallel debugger DDT
+    . . .
+  * and last but not least: **Jupyter Lab**.
+  
+## Jupyter Lab
+
+We have two flavours of this:
+
+ - The default 'native' Jupyter Lab
+
+ - JupyterLab with Alliance software extensions. These can give you similar applications to the OOD interactive applications, but started from jupyter.
+
+We'll use the first here.
+
+# Hands-on 6
+
+## Hands-on 6 (5 minutes)
+
+Part 1:
+ * Access OpenOnDemand
+ * Start a Jupyter Lab session with 4 cores, 8 GB, for 1 hour.
+ * Go to the Launcher tab.
+
+But you won't see your 'myenv' environment?
+
+## VENV2JUP
+
+This is an essential utility to make your virtual environments visible in the JupterHub.
+
+In a terminal (possibly the one on OpenOnDemand):
+
+  * Load all needed modules
+    . . .
+  * Activate your environment
+    . . .
+  * And run
+```bash
+  (myenv) $ venv2jup
+```
+
+This installs some packages and puts a file in `$HOME/.local/share/jupyter/kernels`, which is how the JupyterLab knows it exists.
+
+# Hands-on 7
+
+## Hands-on 7 (5 minutes)
+
+ * Perform the venv2jup step.
+ * Refresh the jupyter lab interface.
+ * Start a 'myenv' notebook.
+ * Check that it works with "`import torch`'
+
+# Thanks you for your attention!
+
+## Questions?
