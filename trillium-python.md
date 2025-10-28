@@ -260,30 +260,7 @@ It should say:
 
 *Note: The dollar sign ("`$`") in the slides will be an abbreviation of the full prompt, which will look more like* `[rzon@tri-login01 ~]$`.
 
-## Different organizations
-
-A digression about all those different organizations
-
-[[
-
-### Digital Research Alliance of Canada
-
-
-||
-
-### CCDB
-
-]]
-
-[[
-
-### Compute Canada
-
-||
-
-### SciNet
-
-]]
+##
 
 ## Command line
 
@@ -380,7 +357,7 @@ Need to brush up on the Linux command line? SHARCNET has a self-guided course fo
 
 ## Hands-on 2 (5 minutes)
 
-* From a CPU login node, copy the python code in /home/rzon/fashion.py to your own directoyr.
+* From a CPU login node, copy the python code in /home/rzon/fashion.py to your own directory.
 
 * Try to run it with `python fashion.py`; it should fail.
 
@@ -479,7 +456,7 @@ CPU time limit exceeded
  * For longer runs, you need to submit a job to run on the compute nodes.
    . . .
    
-****Caveat (again)! This task here is not really heavy enough to warrent using a full 192-core Trillium node!****
+****Caveat (again)! This task here is not really heavy enough to warrant using a full 192-core Trillium node!****
 
 ## Peculiarities of Trillium compute nodes 
 
@@ -614,7 +591,7 @@ We just have to:
 .
 ```bash
 #SBATCH --gpus-per-node=1
-#SBATCH --cpus-per-node=24
+#SBATCH --cpus-per-task=24
 ```
 
 ]]
@@ -637,14 +614,14 @@ Let's run it on the GPU subcluster of Trillium!
 
 ## Not everything needs 192 cores, or a GPU
 
-Wwhat if you have that one postprocessing step that you need less than 192 cores for?
+What if you have that one postprocessing step that you need less than 192 cores for?
 .
 What if you need to do some visualization?
 .
 . . .
 For interactive work of that and other kinds in python, JupyterLab is typically used.
 . . .
-SciNet installed the OnDemand to provide Jupter Lab and other features in the browser.
+SciNet installed the OnDemand to provide Jupyter Lab and other features in the browser.
 
 ## Logging into the Open OnDemand portal
 
@@ -707,7 +684,7 @@ The application will open in a new tab in your browser.
     . . .
   * VS Code - a code editor
     . . .
-  * Paraview - a parallel visualization rpogram
+  * Paraview - a parallel visualization program
     . . .
   * ARM Forge - to use the parallel debugger DDT
     . . .
@@ -719,7 +696,7 @@ We have two flavours of this:
 
  - The default 'native' Jupyter Lab
 
- - JupyterLab with Alliance software extensions. These can give you similar applications to the OOD interactive applications, but started from jupyter.
+ - JupyterLab with Alliance software extensions. These can give you similar applications to the OOD interactive applications, but started from Jupyter.
 
 We'll use the first here.
 
@@ -760,6 +737,5 @@ This installs some packages and puts a file in `$HOME/.local/share/jupyter/kerne
  * Start a 'myenv' notebook.
  * Check that it works with "`import torch`'
 
-# Thanks you for your attention!
+# Thank you for your attention!
 
-## Questions?
